@@ -205,18 +205,18 @@ export default function Home() {
 
         <aside className="panel holding-card">
           <div className="panel-head compact">
-            <div><p className="eyebrow">CURRENT POSITION</p><h2>最新持仓</h2></div>
-            <span className="status">实际份额口径</span>
+            <div><p className="eyebrow">DIVIDEND &amp; VERIFICATION</p><h2>分红与数据核验</h2></div>
+            <span className="status">已完成复权</span>
           </div>
-          <p className="muted-copy">不采用产品成立以来累计净值；直接以你的100万元投入和托管邮件中的最新实际份额计算。</p>
-          <div className="holding-value"><span>最新持仓市值</span><strong>{money(holdingValue)}</strong><em className="negative">浮动损益 {money(holdingValue - INITIAL_AMOUNT)}</em></div>
+          <p className="muted-copy">这里仅保留会影响收益计算口径的分红、份额变化和托管邮件核验信息。</p>
+          <div className="holding-value"><span>分红日期</span><strong>2026-06-30</strong><em className="teal">分红再投资 · 分红后单位净值 1.0200</em></div>
           <dl className="detail-list">
-            <div><dt>申购确认日</dt><dd>2026-04-09</dd></div>
-            <div><dt>申购单位净值</dt><dd>{PURCHASE_NAV.toFixed(4)}</dd></div>
-            <div><dt>初始确认份额</dt><dd>{INITIAL_SHARES.toLocaleString("zh-CN", { minimumFractionDigits: 2 })}</dd></div>
-            <div><dt>分红再投资新增</dt><dd>+{REINVESTED_SHARES.toLocaleString("zh-CN", { minimumFractionDigits: 2 })}</dd></div>
-            <div><dt>最新持有份额</dt><dd>{CURRENT_SHARES.toLocaleString("zh-CN", { minimumFractionDigits: 2 })}</dd></div>
-            <div><dt>最新单位净值</dt><dd>{latest.unitNav.toFixed(4)}</dd></div>
+            <div><dt>分红前确认份额</dt><dd>{INITIAL_SHARES.toLocaleString("zh-CN", { minimumFractionDigits: 2 })}</dd></div>
+            <div><dt>再投资新增份额</dt><dd className="positive">+{REINVESTED_SHARES.toLocaleString("zh-CN", { minimumFractionDigits: 2 })}</dd></div>
+            <div><dt>分红后持有份额</dt><dd>{CURRENT_SHARES.toLocaleString("zh-CN", { minimumFractionDigits: 2 })}</dd></div>
+            <div><dt>除权后首个估值</dt><dd>07/03 · 0.9996</dd></div>
+            <div><dt>最新净值邮件</dt><dd>08/07 · {latest.unitNav.toFixed(4)}</dd></div>
+            <div><dt>邮件核验日期</dt><dd>2026-08-10</dd></div>
           </dl>
         </aside>
       </section>
