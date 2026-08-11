@@ -141,7 +141,7 @@ function TrendChart() {
     return () => observer.disconnect();
   }, []);
 
-  return <canvas ref={canvasRef} className="trend" aria-label="买入以来个人持仓收益与中证1000同期收益曲线" />;
+  return <canvas ref={canvasRef} className="trend" aria-label="基金净值与中证1000对比曲线" />;
 }
 
 export default function Home() {
@@ -195,7 +195,7 @@ export default function Home() {
           <div className="panel-head">
             <div>
               <p className="eyebrow">ECONOMIC VIEW · PURCHASE DATE = 0%</p>
-              <h2>我的持仓收益与中证1000</h2>
+              <h2>基金净值与中证1000</h2>
               <p className="chart-note">两条曲线从4月9日同一0%起点延伸；青绿色净值点按你的实际份额变化复权。</p>
             </div>
             <div className="legend"><i className="fund" />我的持仓<i className="index" />000852</div>
