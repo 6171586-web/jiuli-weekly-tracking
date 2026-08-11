@@ -208,7 +208,10 @@ export default function Home() {
             <div><p className="eyebrow">DIVIDEND &amp; VERIFICATION</p><h2>分红与数据核验</h2></div>
             <span className="status">已完成复权</span>
           </div>
-          <p className="muted-copy">这里仅保留会影响收益计算口径的分红、份额变化和托管邮件核验信息。</p>
+          <dl className="index-check-list">
+            <div><dt>买入时中证1000指数<small>2026-04-09</small></dt><dd>{INDEX_BASE.toFixed(2)}</dd></div>
+            <div><dt>最新净值时中证1000指数<small>{latest.date}</small></dt><dd>{latest.index.toFixed(2)}</dd></div>
+          </dl>
           <div className="holding-value"><span>分红日期</span><strong>2026-06-30</strong><em className="teal">分红再投资 · 分红后单位净值 1.0200</em></div>
           <dl className="detail-list">
             <div><dt>分红前确认份额</dt><dd>{INITIAL_SHARES.toLocaleString("zh-CN", { minimumFractionDigits: 2 })}</dd></div>
