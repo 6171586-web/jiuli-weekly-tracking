@@ -19,19 +19,33 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Check whether this week's update is complete
+        if: github.event_name == 'schedule'
+        id: update-gate
+        run: |
+          if node scripts/should-update.mjs; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          fi
       - uses: actions/setup-node@v4
+        if: github.event_name != 'schedule' || steps.update-gate.outputs.run == 'true'
         with:
           node-version: 22
           cache: npm
       - run: npm ci
+        if: github.event_name != 'schedule' || steps.update-gate.outputs.run == 'true'
       - name: Check QQ mail and update data
+        if: github.event_name != 'schedule' || steps.update-gate.outputs.run == 'true'
         run: npm run update:weekly
         env:
           QQ_EMAIL: ${{ secrets.QQ_EMAIL }}
           QQ_AUTH_CODE: ${{ secrets.QQ_AUTH_CODE }}
       - name: Validate the site
+        if: github.event_name != 'schedule' || steps.update-gate.outputs.run == 'true'
         run: npm test
       - name: Commit new valuation data
+        if: github.event_name != 'schedule' || steps.update-gate.outputs.run == 'true'
         shell: bash
         run: |
           if git diff --quiet -- data/tracker.json; then

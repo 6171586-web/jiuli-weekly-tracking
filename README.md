@@ -21,7 +21,8 @@ npm run dev
 
 GitHub Actions 每周一北京时间10:00检查QQ邮箱；如果没有新净值，11:00再检查一次。
 发现新邮件后，流程会读取单位净值和份额、取得同日中证1000收盘数据、更新
-`data/tracker.json`，并由GitHub Pages自动发布。
+`data/tracker.json`，并由GitHub Pages自动发布。若10:00已经成功更新，11:00会在连接
+邮箱之前直接退出，本周不再重复检查。
 
 仓库需要配置两个Actions机密：
 

@@ -190,6 +190,7 @@ export function applyValuations(tracker, valuations, indexByDate, verifiedAt) {
     holdingValue: latest.holdingValue ?? round(shares * latest.unitNav, 2)
   };
   tracker.mailVerifiedAt = verifiedAt;
+  tracker.lastSuccessfulCheckDate = verifiedAt;
   return true;
 }
 
