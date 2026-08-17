@@ -17,6 +17,19 @@ npm install
 npm run dev
 ```
 
+## 云端自动更新
+
+GitHub Actions 每周一北京时间10:00检查QQ邮箱；如果没有新净值，11:00再检查一次。
+发现新邮件后，流程会读取单位净值和份额、取得同日中证1000收盘数据、更新
+`data/tracker.json`，并由GitHub Pages自动发布。
+
+仓库需要配置两个Actions机密：
+
+- `QQ_EMAIL`：QQ邮箱账号。
+- `QQ_AUTH_CODE`：QQ邮箱IMAP授权码。
+
+机密只由GitHub Actions读取，不写入源码、网页或构建日志。
+
 ## GitHub Pages构建
 
 ```bash

@@ -1,44 +1,25 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import tracker from "../data/tracker.json";
 
 type Point = { date: string; unitNav: number; index: number; note?: string };
 
-const PURCHASE_DATE = "2026-04-09";
-const PURCHASE_NAV = 1.0015;
-const INDEX_BASE = 7921.45;
-const INITIAL_AMOUNT = 1_000_000;
-const INITIAL_SHARES = 998_502.25;
-const REINVESTED_SHARES = 77_559.35;
-const CURRENT_SHARES = 1_076_061.6;
-const DIVIDEND_DATE = "2026-06-30";
-
-const points: Point[] = [
-  { date: PURCHASE_DATE, unitNav: PURCHASE_NAV, index: INDEX_BASE, note: "申购确认" },
-  { date: "2026-04-10", unitNav: 1.0108, index: 7998.23 },
-  { date: "2026-04-17", unitNav: 1.0449, index: 8307.44 },
-  { date: "2026-04-24", unitNav: 1.043, index: 8304.14 },
-  { date: "2026-04-30", unitNav: 1.0654, index: 8381.95 },
-  { date: "2026-05-08", unitNav: 1.1128, index: 8741.15 },
-  { date: "2026-05-15", unitNav: 1.1028, index: 8682.65 },
-  { date: "2026-05-22", unitNav: 1.106, index: 8692.67 },
-  { date: "2026-05-29", unitNav: 1.0593, index: 8408.74 },
-  { date: "2026-06-05", unitNav: 1.0577, index: 8340.96 },
-  { date: "2026-06-12", unitNav: 1.0503, index: 8202.8 },
-  { date: "2026-06-18", unitNav: 1.1176, index: 8771.02 },
-  { date: "2026-06-26", unitNav: 1.0972, index: 8601.41 },
-  { date: DIVIDEND_DATE, unitNav: 1.02, index: 8809.79, note: "分红再投资" },
-  { date: "2026-07-03", unitNav: 0.9996, index: 8620.79 },
-  { date: "2026-07-10", unitNav: 0.9532, index: 8198.31 },
-  { date: "2026-07-17", unitNav: 0.8174, index: 7168 },
-  { date: "2026-07-24", unitNav: 0.8009, index: 6995.69 },
-  { date: "2026-07-31", unitNav: 0.8208, index: 7075.51 },
-  { date: "2026-08-07", unitNav: 0.8979, index: 7679.53, note: "最新净值" },
-];
+const PURCHASE_DATE = tracker.purchase.date;
+const PURCHASE_NAV = tracker.purchase.unitNav;
+const INDEX_BASE = tracker.purchase.index;
+const INITIAL_AMOUNT = tracker.purchase.amount;
+const INITIAL_SHARES = tracker.purchase.shares;
+const REINVESTED_SHARES = tracker.dividend.reinvestedShares;
+const CURRENT_SHARES = tracker.dividend.totalShares;
+const DIVIDEND_DATE = tracker.dividend.date;
+const points = tracker.points as Point[];
 
 const pct = (value: number, digits = 2) => `${value >= 0 ? "+" : ""}${(value * 100).toFixed(digits)}%`;
 const money = (value: number) => new Intl.NumberFormat("zh-CN", { style: "currency", currency: "CNY", maximumFractionDigits: 2 }).format(value);
 const shortDate = (value: string) => value.slice(5).replace("-", "/");
+const compactDate = (value: string) => shortDate(value).replace(/^0/, "").replace("/0", "/");
+const dottedDate = (value: string) => value.replaceAll("-", ".");
 const sharesAt = (point: Point) => point.date >= DIVIDEND_DATE ? CURRENT_SHARES : INITIAL_SHARES;
 const holdingValueAt = (point: Point) => sharesAt(point) * point.unitNav;
 const holdingReturnAt = (point: Point) => point.date === PURCHASE_DATE ? 0 : holdingValueAt(point) / INITIAL_AMOUNT - 1;
@@ -95,7 +76,7 @@ function TrendChart() {
       ctx.stroke();
       ctx.fillStyle = "#ead2a3";
       ctx.textAlign = "left";
-      ctx.fillText("0% · 04/09买入", pad.left + 7, y(0) - 8);
+      ctx.fillText(`0% · ${shortDate(PURCHASE_DATE)}买入`, pad.left + 7, y(0) - 8);
 
       const drawLine = (series: number[], color: string, showLabels = false) => {
         ctx.strokeStyle = color;
@@ -168,24 +149,24 @@ export default function Home() {
     <main>
       <header className="page-header">
         <div>
-          <p className="eyebrow">PERSONAL PERFORMANCE NOTE · 2026.08.07</p>
+          <p className="eyebrow">PERSONAL PERFORMANCE NOTE · {dottedDate(latest.date)}</p>
           <h1>Divis AI每周跟踪</h1>
           <p className="sub">从2026年4月9日申购确认日起，观察持仓收益与中证1000超额</p>
           <div className="method-strip">
-            <b>买入基准</b><span>单位净值 1.0015</span><i />
-            <span>000852收盘 7921.45</span><i />
+            <b>买入基准</b><span>单位净值 {PURCHASE_NAV.toFixed(4)}</span><i />
+            <span>000852收盘 {INDEX_BASE.toFixed(2)}</span><i />
             <span>分红再投资按实际份额复权</span>
           </div>
         </div>
         <div className="header-actions">
-          <div className="badge"><span>净值更新至</span><strong>08 · 07</strong></div>
-          <div className="badge quiet"><span>邮件核验</span><strong>08/10</strong></div>
+          <div className="badge"><span>净值更新至</span><strong>{shortDate(latest.date).replace("/", " · ")}</strong></div>
+          <div className="badge quiet"><span>邮件核验</span><strong>{shortDate(tracker.mailVerifiedAt)}</strong></div>
         </div>
       </header>
 
       <section className="metrics" aria-label="买入以来核心指标">
         <article><span>我的持仓收益</span><strong className="negative">{pct(holdingReturn)}</strong><small>{money(holdingValue)} ÷ 100万元</small></article>
-        <article><span>中证1000同期收益</span><strong className="orange">{pct(indexReturn)}</strong><small>000852 · 4/9收盘至8/7</small></article>
+        <article><span>中证1000同期收益</span><strong className="orange">{pct(indexReturn)}</strong><small>000852 · {compactDate(PURCHASE_DATE)}收盘至{compactDate(latest.date)}</small></article>
         <article className="primary-metric"><span>买入以来累计超额</span><strong className={excessReturn >= 0 ? "positive" : "negative"}>{pct(excessReturn)}</strong><small>持仓收益 − 指数收益</small></article>
         <article><span>最新一周超额</span><strong className="positive">{pct(weeklyHolding - weeklyIndex)}</strong><small>持仓 {pct(weeklyHolding)} · 指数 {pct(weeklyIndex)}</small></article>
       </section>
@@ -209,17 +190,17 @@ export default function Home() {
             <span className="status">已完成复权</span>
           </div>
           <dl className="index-check-list">
-            <div><dt>买入时中证1000指数<small>2026-04-09</small></dt><dd>{INDEX_BASE.toFixed(2)}</dd></div>
+            <div><dt>买入时中证1000指数<small>{PURCHASE_DATE}</small></dt><dd>{INDEX_BASE.toFixed(2)}</dd></div>
             <div><dt>最新净值时中证1000指数<small>{latest.date}</small></dt><dd>{latest.index.toFixed(2)}</dd></div>
           </dl>
-          <div className="holding-value"><span>分红日期</span><strong>2026-06-30</strong><em className="teal">分红再投资 · 分红后单位净值 1.0200</em></div>
+          <div className="holding-value"><span>分红日期</span><strong>{DIVIDEND_DATE}</strong><em className="teal">分红再投资 · 分红后单位净值 {tracker.dividend.postNav.toFixed(4)}</em></div>
           <dl className="detail-list">
             <div><dt>分红前确认份额</dt><dd>{INITIAL_SHARES.toLocaleString("zh-CN", { minimumFractionDigits: 2 })}</dd></div>
             <div><dt>再投资新增份额</dt><dd className="positive">+{REINVESTED_SHARES.toLocaleString("zh-CN", { minimumFractionDigits: 2 })}</dd></div>
             <div><dt>分红后持有份额</dt><dd>{CURRENT_SHARES.toLocaleString("zh-CN", { minimumFractionDigits: 2 })}</dd></div>
-            <div><dt>除权后首个估值</dt><dd>07/03 · 0.9996</dd></div>
-            <div><dt>最新净值邮件</dt><dd>08/07 · {latest.unitNav.toFixed(4)}</dd></div>
-            <div><dt>邮件核验日期</dt><dd>2026-08-10</dd></div>
+            <div><dt>除权后首个估值</dt><dd>{shortDate(tracker.dividend.firstExDate)} · {tracker.dividend.firstExNav.toFixed(4)}</dd></div>
+            <div><dt>最新净值邮件</dt><dd>{shortDate(latest.date)} · {latest.unitNav.toFixed(4)}</dd></div>
+            <div><dt>邮件核验日期</dt><dd>{tracker.mailVerifiedAt}</dd></div>
           </dl>
         </aside>
       </section>
@@ -229,10 +210,10 @@ export default function Home() {
           <p className="eyebrow">POSITION ROLL-FORWARD</p>
           <h2>持仓份额如何复权</h2>
           <div className="timeline">
-            <div><time>04/09</time><span><b>申购确认</b><small>100万元 · 998,502.25份 · 净值1.0015</small></span></div>
-            <div><time>06/30</time><span><b>分红再投资</b><small>分红后净值1.0200 · 新增77,559.35份</small></span></div>
-            <div><time>07/03</time><span><b>除权后首个周度净值</b><small>1,076,061.60份 × 单位净值0.9996</small></span></div>
-            <div><time>08/07</time><span><b>最新估值</b><small>1,076,061.60份 × 单位净值0.8979</small></span></div>
+            <div><time>{shortDate(PURCHASE_DATE)}</time><span><b>申购确认</b><small>{money(INITIAL_AMOUNT)} · {INITIAL_SHARES.toLocaleString("zh-CN", { minimumFractionDigits: 2 })}份 · 净值{PURCHASE_NAV.toFixed(4)}</small></span></div>
+            <div><time>{shortDate(DIVIDEND_DATE)}</time><span><b>分红再投资</b><small>分红后净值{tracker.dividend.postNav.toFixed(4)} · 新增{REINVESTED_SHARES.toLocaleString("zh-CN", { minimumFractionDigits: 2 })}份</small></span></div>
+            <div><time>{shortDate(tracker.dividend.firstExDate)}</time><span><b>除权后首个周度净值</b><small>{CURRENT_SHARES.toLocaleString("zh-CN", { minimumFractionDigits: 2 })}份 × 单位净值{tracker.dividend.firstExNav.toFixed(4)}</small></span></div>
+            <div><time>{shortDate(latest.date)}</time><span><b>最新估值</b><small>{CURRENT_SHARES.toLocaleString("zh-CN", { minimumFractionDigits: 2 })}份 × 单位净值{latest.unitNav.toFixed(4)}</small></span></div>
           </div>
         </div>
         <div className="panel method-panel">

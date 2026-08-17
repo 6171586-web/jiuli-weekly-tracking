@@ -1,0 +1,45 @@
+name: Update weekly valuation
+
+on:
+  schedule:
+    # GitHub cron uses UTC: 02:00/03:00 = Beijing 10:00/11:00.
+    - cron: "0 2 * * 1"
+    - cron: "0 3 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: jiuli-weekly-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Check QQ mail and update data
+        run: npm run update:weekly
+        env:
+          QQ_EMAIL: ${{ secrets.QQ_EMAIL }}
+          QQ_AUTH_CODE: ${{ secrets.QQ_AUTH_CODE }}
+      - name: Validate the site
+        run: npm test
+      - name: Commit new valuation data
+        shell: bash
+        run: |
+          if git diff --quiet -- data/tracker.json; then
+            echo "No new valuation data."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/tracker.json
+          git commit -m "Update weekly valuation data"
+          git push

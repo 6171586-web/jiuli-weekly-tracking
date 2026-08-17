@@ -1,0 +1,48 @@
+{
+  "fundName": "璞理九里一号私募证券投资基金A",
+  "fundCode": "BPW63A",
+  "mailVerifiedAt": "2026-08-10",
+  "purchase": {
+    "date": "2026-04-09",
+    "amount": 1000000,
+    "unitNav": 1.0015,
+    "shares": 998502.25,
+    "index": 7921.45
+  },
+  "dividend": {
+    "date": "2026-06-30",
+    "postNav": 1.02,
+    "reinvestedShares": 77559.35,
+    "totalShares": 1076061.6,
+    "firstExDate": "2026-07-03",
+    "firstExNav": 0.9996
+  },
+  "latestEmail": {
+    "valuationDate": "2026-08-07",
+    "unitNav": 0.8979,
+    "totalShares": 1076061.6,
+    "holdingValue": 966195.71
+  },
+  "points": [
+    { "date": "2026-04-09", "unitNav": 1.0015, "index": 7921.45, "note": "申购确认" },
+    { "date": "2026-04-10", "unitNav": 1.0108, "index": 7998.23 },
+    { "date": "2026-04-17", "unitNav": 1.0449, "index": 8307.44 },
+    { "date": "2026-04-24", "unitNav": 1.043, "index": 8304.14 },
+    { "date": "2026-04-30", "unitNav": 1.0654, "index": 8381.95 },
+    { "date": "2026-05-08", "unitNav": 1.1128, "index": 8741.15 },
+    { "date": "2026-05-15", "unitNav": 1.1028, "index": 8682.65 },
+    { "date": "2026-05-22", "unitNav": 1.106, "index": 8692.67 },
+    { "date": "2026-05-29", "unitNav": 1.0593, "index": 8408.74 },
+    { "date": "2026-06-05", "unitNav": 1.0577, "index": 8340.96 },
+    { "date": "2026-06-12", "unitNav": 1.0503, "index": 8202.8 },
+    { "date": "2026-06-18", "unitNav": 1.1176, "index": 8771.02 },
+    { "date": "2026-06-26", "unitNav": 1.0972, "index": 8601.41 },
+    { "date": "2026-06-30", "unitNav": 1.02, "index": 8809.79, "note": "分红再投资" },
+    { "date": "2026-07-03", "unitNav": 0.9996, "index": 8620.79 },
+    { "date": "2026-07-10", "unitNav": 0.9532, "index": 8198.31 },
+    { "date": "2026-07-17", "unitNav": 0.8174, "index": 7168 },
+    { "date": "2026-07-24", "unitNav": 0.8009, "index": 6995.69 },
+    { "date": "2026-07-31", "unitNav": 0.8208, "index": 7075.51 },
+    { "date": "2026-08-07", "unitNav": 0.8979, "index": 7679.53, "note": "最新净值" }
+  ]
+}
