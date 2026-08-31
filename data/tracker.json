@@ -1,8 +1,8 @@
 {
   "fundName": "璞理九里一号私募证券投资基金A",
   "fundCode": "BPW63A",
-  "mailVerifiedAt": "2026-08-24",
-  "lastSuccessfulCheckDate": "2026-08-24",
+  "mailVerifiedAt": "2026-08-31",
+  "lastSuccessfulCheckDate": "2026-08-31",
   "purchase": {
     "date": "2026-04-09",
     "amount": 1000000,
@@ -19,10 +19,10 @@
     "firstExNav": 0.9996
   },
   "latestEmail": {
-    "valuationDate": "2026-08-21",
-    "unitNav": 0.9014,
+    "valuationDate": "2026-08-28",
+    "unitNav": 0.9151,
     "totalShares": 1076061.6,
-    "holdingValue": 969961.93
+    "holdingValue": 984703.97
   },
   "points": [
     {
@@ -135,7 +135,22 @@
     {
       "date": "2026-08-21",
       "unitNav": 0.9014,
-      "index": 7601.8,
+      "index": 7601.8
+    },
+    {
+      "date": "2026-08-25",
+      "unitNav": 0.8962,
+      "index": 7527.5
+    },
+    {
+      "date": "2026-08-26",
+      "unitNav": 0.8957,
+      "index": 7544.67
+    },
+    {
+      "date": "2026-08-28",
+      "unitNav": 0.9151,
+      "index": 7705.03,
       "note": "最新净值"
     }
   ]
