@@ -1,10 +1,6 @@
 name: Update weekly valuation
 
 on:
-  schedule:
-    # GitHub cron uses UTC: 02:00/03:00 = Beijing 10:00/11:00.
-    - cron: "0 2 * * 1"
-    - cron: "0 3 * * 1"
   workflow_dispatch:
 
 permissions:
